@@ -3,7 +3,7 @@
 namespace Nimbusec;
 
 use GuzzleHttp\Client;
-use GuzzleHttp\Psr7\Response;
+use Psr\Http\Message\ResponseInterface;
 
 use Webmozart\PathUtil\Path;
 use Composer\CaBundle\CaBundle;
@@ -51,10 +51,10 @@ class API
 	/**
 	 * Formats a given GuzzleHttp response and retrieves besides the X-Nimbusec-Error header.
 	 *
-	 * @param Response $response The given response.
+	 * @param ResponseInterface $response The given response.
 	 * @return string The formates response message.
 	 */
-	private function convertToString(Response $response)
+	private function convertToString(ResponseInterface $response)
 	{
 		return trim(sprintf(
 			"%s: %s %s",
@@ -1273,7 +1273,7 @@ class API
 		$request->sign_request(new OAuthSignatureMethod_HMAC_SHA1(), $this->consumer, null);
 
 		// send request
-		$response = $this->client->put($request->to_url(), null);
+		$response = $this->client->put($request->to_url());
 		if ($response->getStatusCode() !== 200) {
 			throw new Exception($this->convertToString($response));
 		}
@@ -1372,7 +1372,7 @@ class API
 		$request->sign_request(new OAuthSignatureMethod_HMAC_SHA1(), $this->consumer, null);
 
 		// send request
-		$response = $this->client->put($request->to_url(), null);
+		$response = $this->client->put($request->to_url());
 		if ($response->getStatusCode() !== 200) {
 			throw new Exception($this->convertToString($response));
 		}
